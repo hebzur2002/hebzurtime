@@ -22,6 +22,11 @@ export default function Home() {
   async function init() {
     const { data: userData } = await supabase.auth.getUser();
     const uid = userData.user?.id ?? null;
+
+    if (!uid) {
+      window.location.href = "/login";
+      return;
+    }
     setUserId(uid);
 
     const { data: cats } = await supabase
@@ -32,11 +37,20 @@ export default function Home() {
 
     if (uid) {
       await loadTodayEntries(uid);
-      const { data: settings } = await supabase
+      let { data: settings } = await supabase
         .from("user_settings")
         .select("*")
         .eq("user_id", uid)
-        .single();
+        .maybeSingle();
+
+      if (!settings) {
+        const { data: created } = await supabase
+          .from("user_settings")
+          .insert({ user_id: uid })
+          .select()
+          .single();
+        settings = created;
+      }
 
       if (settings) {
         const granted = await requestNotificationPermission();
@@ -124,16 +138,6 @@ export default function Home() {
         <h1>Today</h1>
         <a href="/settings">Settings</a>
       </div>
-
-      {!userId && (
-        <div className="card">
-          <p className="muted">
-            Sign in required to log entries. Wire up Supabase auth in
-            lib/supabase.ts usage — see README for the quickest path (magic
-            link or GitHub OAuth).
-          </p>
-        </div>
-      )}
 
       <div className="card">
         <label>Kya kar rahe the? (last entry se ab tak)</label>
