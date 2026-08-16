@@ -28,7 +28,7 @@ export default function Settings() {
         .from("user_settings")
         .select("*")
         .eq("user_id", uid)
-        .single();
+        .maybeSingle();
 
       if (existing) setSettings(existing);
     })();
@@ -105,6 +105,21 @@ export default function Settings() {
           {saved ? "Saved ✓" : "Save settings"}
         </button>
       </div>
+
+      {userId && (
+        <div className="card">
+          <button
+            className="primary"
+            style={{ background: "#333" }}
+            onClick={async () => {
+              await supabase.auth.signOut();
+              window.location.href = "/login";
+            }}
+          >
+            Sign out
+          </button>
+        </div>
+      )}
     </div>
   );
 }
