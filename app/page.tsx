@@ -6,6 +6,7 @@ import { Category, Entry, formatDuration, formatTime } from "@/lib/types";
 import {
   requestNotificationPermission,
   startReminderLoop,
+  showReminderNotification,
 } from "@/lib/notifications";
 
 export default function Home() {
@@ -163,6 +164,20 @@ export default function Home() {
 
       <div className="card">
         <label>Timeline</label>
+        <button
+          className="primary"
+          style={{ marginBottom: 12, background: "#333" }}
+          onClick={async () => {
+            const granted = await requestNotificationPermission();
+            if (!granted) {
+              alert("Permission not granted — check browser settings.");
+              return;
+            }
+            showReminderNotification(15, false);
+          }}
+        >
+          Test notification now
+        </button>
         {entries.length === 0 && (
           <p className="muted">Koi entry nahi hai abhi. Upar se log karo.</p>
         )}
