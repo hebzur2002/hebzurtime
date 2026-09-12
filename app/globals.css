@@ -84,7 +84,8 @@ input[type="text"],
 textarea,
 select,
 input[type="number"],
-input[type="time"] {
+input[type="time"],
+input[type="date"] {
   width: 100%;
   background: #1e222b;
   border: 1px solid var(--border);
@@ -94,6 +95,10 @@ input[type="time"] {
   font-size: 14px;
   margin-top: 6px;
   margin-bottom: 14px;
+}
+
+input[type="date"] {
+  color-scheme: dark;
 }
 
 label {
