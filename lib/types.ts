@@ -40,3 +40,36 @@ export function formatTime(iso: string): string {
     minute: "2-digit",
   });
 }
+
+// "2026-09-12" (local date, not UTC) — used as the value for <input type="date">
+// and as a stable key for grouping/navigating by day.
+export function dateKey(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+// Local-midnight-to-local-midnight ISO range for a given yyyy-mm-dd string,
+// for querying entries that fall on that calendar day.
+export function dayRange(key: string): { start: string; end: string } {
+  const [y, m, d] = key.split("-").map(Number);
+  const start = new Date(y, m - 1, d, 0, 0, 0, 0);
+  const end = new Date(y, m - 1, d + 1, 0, 0, 0, 0);
+  return { start: start.toISOString(), end: end.toISOString() };
+}
+
+export function formatDayLabel(key: string): string {
+  const [y, m, d] = key.split("-").map(Number);
+  const date = new Date(y, m - 1, d);
+  const todayKey = dateKey(new Date());
+  const yestKey = dateKey(new Date(Date.now() - 86400000));
+  if (key === todayKey) return "Today";
+  if (key === yestKey) return "Yesterday";
+  return date.toLocaleDateString([], {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
