@@ -127,7 +127,10 @@ export default function Home() {
     <div className="container">
       <div className="header">
         <h1>Today</h1>
-        <a href="/settings">Settings</a>
+        <div style={{ display: "flex", gap: 14 }}>
+          <a href="/history">History</a>
+          <a href="/settings">Settings</a>
+        </div>
       </div>
 
       <div className="card">
