@@ -1,4 +1,4 @@
-# TimeTrack — Setup Guide
+# TimeTrack — Setup Guideline
 
 ## 1. Supabase setup
 1. Go to supabase.com → New project (free tier).
