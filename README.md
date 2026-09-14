@@ -12,7 +12,7 @@
    method (Email magic link is the simplest for a solo personal app — no
    password needed).
 
-## 2. Local project setup
+## 2. Local project setup 
 1. `.env.local` already has working VAPID keys + a cron secret filled in —
    you only need to add your Supabase URL, anon key, and service role key
    (Project Settings → API → `service_role` — keep this one secret, never
